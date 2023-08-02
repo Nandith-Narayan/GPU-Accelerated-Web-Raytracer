@@ -38,10 +38,10 @@ const render = gpu.createKernel(function (numObjects, data, colors, SCREEN_WIDTH
     let nextDirY = 0;
     let nextDirZ = 0;
 
-    let finalColor = [0, 0, 0];
+    let finalColor = [1, 1, 1];
 
     for (let rayCount = 0; rayCount < REFLECTION_LIMIT; rayCount++) {
-        let color = [0, 0, 0];
+        let color = [1, 1, 1];
         let t = 10000;
 
         // Check all objects for collision
@@ -148,14 +148,13 @@ let objects = [
     0, 0, -10, 1,
     3, 0, -10, 1,
     0, 0, 0, 1,
-    0, 0, 0, 1
+    0, 0, 0, 1,
 ];
-
 let colors = [
     0, 0, 1,
     1, 0, 0,
     0, 1, 0,
-    1, 0, 1
+    1, 0, 1,
 ];
 
 render(objects.length, objects, colors, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -185,7 +184,7 @@ function renderFrame() {
     objects = objects.concat([Math.sin(t)*3, 2.5, -4+Math.cos(t)*3, 1]);
     objects = objects.concat([Math.sin(t)*3, -2.5, -4+Math.cos(t)*3, 1]);
 
-    render(objects.length, objects, colors, SCREEN_WIDTH, SCREEN_HEIGHT);
+    render(objects.length/4, objects, colors, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     t += 0.01;
     window.requestAnimationFrame(renderFrame);
