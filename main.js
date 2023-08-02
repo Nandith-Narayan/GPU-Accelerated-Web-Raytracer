@@ -30,7 +30,7 @@ const render = gpu.createKernel(function (numObjects, data, colors, SCREEN_WIDTH
     let originX = 0;
     let originY = 0;
     let originZ = 0;
-    
+
     let nextOriginX = 0;
     let nextOriginY = 0;
     let nextOriginZ = 0;
@@ -130,7 +130,7 @@ const render = gpu.createKernel(function (numObjects, data, colors, SCREEN_WIDTH
         } else {
             finalColor = combineColors(finalColor, color, 0.0);
         }
-        if(nextDirX==0 && nextDirY==0 && nextDirZ==0){
+        if (nextDirX == 0 && nextDirY == 0 && nextDirZ == 0) {
             break;
         }
         dirX = nextDirX;
@@ -139,24 +139,26 @@ const render = gpu.createKernel(function (numObjects, data, colors, SCREEN_WIDTH
         originX = nextOriginX;
         originY = nextOriginY;
         originZ = nextOriginZ;
-        
+
     }
     this.color(finalColor[0], finalColor[1], finalColor[2], 1);
 }).setOutput([SCREEN_WIDTH, SCREEN_HEIGHT]).setGraphical(true);
 
 let objects = [
     0, 0, -10, 1,
-    3, 0, -10, 1
+    3, 0, -10, 1,
+    0, 0, 0, 1,
+    0, 0, 0, 1
 ];
 
 let colors = [
     0, 0, 1,
-    1, 0, 0
+    1, 0, 0,
+    0, 1, 0,
+    1, 0, 1
 ];
 
 render(objects.length, objects, colors, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
 
 const canvas = render.canvas;
 document.getElementsByTagName('body')[0].appendChild(canvas);
@@ -165,24 +167,26 @@ let t = 0;
 let lastFrameTime = performance.now();
 let fps = 0;
 
-function renderFrame(){
-    
-    let diff = (performance.now() - lastFrameTime)/1000;
-    if(diff == 0){
+function renderFrame() {
+
+    let diff = (performance.now() - lastFrameTime) / 1000;
+    if (diff == 0) {
         diff = 1;
     }
-    fps = 1/diff;
+    fps = 1 / diff;
     lastFrameTime = performance.now();
     fpsCounter = document.getElementById("fps-counter");
-    fpsCounter.innerText = "fps: "+Math.round(fps);
+    fpsCounter.innerText = "fps: " + Math.round(fps);
     //console.log(fps);
-    
+
     objects = [];
-    objects = objects.concat([0, Math.sin(t*0.5), -4, 1]);
-    objects = objects.concat([Math.cos(t)*3, 0, -4+Math.sin(t)*3, 1]);
-    
+    objects = objects.concat([0, Math.sin(t * 0.5), -4, 1]);
+    objects = objects.concat([Math.cos(t) * 3, 0, -4 + Math.sin(t) * 3, 1]);
+    objects = objects.concat([Math.sin(t)*3, 2.5, -4+Math.cos(t)*3, 1]);
+    objects = objects.concat([Math.sin(t)*3, -2.5, -4+Math.cos(t)*3, 1]);
+
     render(objects.length, objects, colors, SCREEN_WIDTH, SCREEN_HEIGHT);
-    
+
     t += 0.01;
     window.requestAnimationFrame(renderFrame);
 }
